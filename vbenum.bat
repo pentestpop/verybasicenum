@@ -62,7 +62,7 @@ echo.
 echo ===========================
 echo History:
 echo ===========================
-more C:\Users\user\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+powershell -Command "Get-Content '$HOME\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt'"
 echo.
 
 

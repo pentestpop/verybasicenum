@@ -75,5 +75,5 @@ Write-Host ""
 Write-Host "=========================="
 Write-Host "PowerShell ConsoleHost History:"
 Write-Host "=========================="
-Get-Content C:\Users\user\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+Get-Content "$HOME\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
 Write-Host ""

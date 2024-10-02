@@ -17,4 +17,8 @@ run_command "SUID BINARIES:" "find / -perm -u=s -type f 2>/dev/null"
 run_command "ODD FILES:" "find / -type f -name -o -name "*.txt" -o -name "*.kdbx" -o -name "*.zip" 2>/dev/null"
 run_command "WRITABLE DIRECTORIES:" "find / -writable -type d 2>/dev/null"
 
-echo "Now run 'sudo -l', 'pspy64', and 'linpeas.sh'.
+echo "Now run 'sudo -l', 'pspy64', and 'linpeas.sh'."
+
+
+# consider adding "crontab -l" and "ls -lah /etc/cron*" among others
+    

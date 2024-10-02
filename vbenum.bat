@@ -34,3 +34,59 @@ echo Network Configuration:
 echo ===========================
 ipconfig
 echo.
+
+echo ===========================
+echo C Drive:
+echo ===========================
+dir C:\
+echo.
+
+echo ===========================
+echo Installed 32 bit:
+echo ===========================
+powershell -Command "Get-ItemProperty 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*' | select displayname"
+echo.
+
+echo ===========================
+echo Installed 64 bit:
+echo ===========================
+powershell -Command "Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*' | Select-Object displayname"
+echo.
+
+echo ===========================
+echo Running Processes:
+echo ===========================
+powershell -Command "Get-Process"
+echo.
+
+echo ===========================
+echo History:
+echo ===========================
+more C:\Users\user\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+echo.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -26,8 +26,7 @@ nmap $IP -v
 echo "Running full TCP scan on all ports..." | tee -a $OUTPUT_FILE
 
 # Run Nmap and parse the output to get open TCP ports only
-# This parses the output to only get the ports that are open
-OPEN_PORTS=$(nmap -p- --open -T4 $IP -oG - | grep '/open/tcp/' | awk -F"[ /]" '{print $5}' | tr '\n' ',' | sed 's/,$//')
+OPEN_PORTS=$(nmap -p- --open -T4 $IP -oG - | grep 'Ports:' | awk -F'Ports: ' '{print $2}' | grep -oE '[0-9]+/open' | cut -d'/' -f1 | tr '\n' ',' | sed 's/,$//')
 
 # Debugging: Display the content of OPEN_PORTS to check if it's correct
 echo "DEBUG: Extracted open TCP ports: $OPEN_PORTS"
@@ -42,11 +41,11 @@ else
     OPEN_PORTS=$(echo "$OPEN_PORTS" | sed 's/,$//')  # Ensure no trailing commas
 
     # Debugging: Display the command that will be run to ensure correctness
-    echo "DEBUG: Running detailed scan with the command: nmap -sC -sV -p$OPEN_PORTS $IP"
+    echo "DEBUG: Running detailed scan with the command: nmap -sC -A -p$OPEN_PORTS $IP"
 
     # Run the detailed scan on open TCP ports
     echo "Running detailed scan on open TCP ports..." | tee -a $OUTPUT_FILE
-    nmap -sC -sV -p"$OPEN_PORTS" "$IP" >> $OUTPUT_FILE
+    nmap -sC -A -p"$OPEN_PORTS" "$IP" >> $OUTPUT_FILE
 fi
 
 # 4. Run a UDP scan

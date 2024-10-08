@@ -13,14 +13,14 @@ if [ -z "$1" ]; then
 fi
 
 IP=$1
-OUTPUT_FILE="nmap_scan_$IP.txt"
+OUTPUT_FILE="nmap_scan.txt"
 
 # Start fresh with the output file
 echo "Starting Nmap scan for $IP" > $OUTPUT_FILE
 
 # 1. Run a basic Nmap scan to get initial results (only show in terminal, not in output file)
 echo "Running basic Nmap scan (output only in terminal)..."
-nmap $IP -v
+nmap $IP
 
 # 2. Run an initial scan to find open TCP ports (saving results to the file)
 echo "Running full TCP scan on all ports..." | tee -a $OUTPUT_FILE
@@ -50,7 +50,7 @@ fi
 
 # 4. Run a UDP scan
 echo "Running UDP scan..." | tee -a $OUTPUT_FILE
-nmap -sU -T4 "$IP" >> $OUTPUT_FILE
+nmap -sU -T4 --top-ports 100 "$IP" >> $OUTPUT_FILE
 
 # 5. Finish up
 echo "Scan complete. Results saved in $OUTPUT_FILE"

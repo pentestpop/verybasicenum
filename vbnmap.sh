@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Check if script is run with sudo privileges
+if [[ "$EUID" -ne 0 ]]; then
+  echo "This script must be run with sudo privileges. Please run as root or use sudo."
+  exit 1
+fi
+
+# Check if an IP address was provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <IP_ADDRESS>"
+    exit 1
+fi
+
+IP=$1
+OUTPUT_FILE="nmap_scan_$IP.txt"
+
+# Start fresh with the output file
+echo "Starting Nmap scan for $IP" > $OUTPUT_FILE
+
+# 1. Run a basic Nmap scan to get initial results (only show in terminal, not in output file)
+echo "Running basic Nmap scan (output only in terminal)..."
+nmap $IP -v
+
+# 2. Run an initial scan to find open TCP ports (saving results to the file)
+echo "Running full TCP scan on all ports..." | tee -a $OUTPUT_FILE
+
+# Run Nmap and parse the output to get open TCP ports only
+# This parses the output to only get the ports that are open
+OPEN_PORTS=$(nmap -p- --open -T4 $IP -oG - | grep '/open/tcp/' | awk -F"[ /]" '{print $5}' | tr '\n' ',' | sed 's/,$//')
+
+# Debugging: Display the content of OPEN_PORTS to check if it's correct
+echo "DEBUG: Extracted open TCP ports: $OPEN_PORTS"
+
+# 3. Check if there are any open TCP ports before proceeding
+if [ -z "$OPEN_PORTS" ]; then
+    echo "No open TCP ports found on $IP." | tee -a $OUTPUT_FILE
+else
+    echo "Open TCP ports: $OPEN_PORTS" | tee -a $OUTPUT_FILE
+
+    # Ensure port list is formatted correctly before running the detailed scan
+    OPEN_PORTS=$(echo "$OPEN_PORTS" | sed 's/,$//')  # Ensure no trailing commas
+
+    # Debugging: Display the command that will be run to ensure correctness
+    echo "DEBUG: Running detailed scan with the command: nmap -sC -sV -p$OPEN_PORTS $IP"
+
+    # Run the detailed scan on open TCP ports
+    echo "Running detailed scan on open TCP ports..." | tee -a $OUTPUT_FILE
+    nmap -sC -sV -p"$OPEN_PORTS" "$IP" >> $OUTPUT_FILE
+fi
+
+# 4. Run a UDP scan
+echo "Running UDP scan..." | tee -a $OUTPUT_FILE
+nmap -sU -T4 "$IP" >> $OUTPUT_FILE
+
+# 5. Finish up
+echo "Scan complete. Results saved in $OUTPUT_FILE"

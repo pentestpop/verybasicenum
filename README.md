@@ -1,7 +1,5 @@
 # verybasicenum
-Work in progress OSCP focused enumeration scripts. Winpeas/Linpeas and the like already exist, and the goal is not to re-invent the wheel, but rather to collect more basic information and practice automating about what information I am likely to seek out first manually when popping a shell on a machine. I doubt very much that I will include anything that isn't also included in more popular and involved enumeration scripts. 
-
-
+Very basic, work-in-progress, OSCP-focused enumeration scripts. The vbenum scripts are to get basic information about where to direct manual attention, especially while running winpeas/linpeas if possible, and the vbnmap script shows the output of a basic scan while running more detailed scans on all TCP and UDP ports so you can get started while it's still running. Perfect for adding additional commands for an autorecon-lite. 
 
 
 

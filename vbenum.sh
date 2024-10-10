@@ -1,9 +1,14 @@
 #!/bin/bash
 
-# Function to print title and run command
+# Function to print title with color and run command
 run_command() {
-  echo -e "\n$1"   # Print title
-  eval "$2"         # Execute the command
+  # Define the true color code for pink and reset color
+  PINK='\033[38;2;255;105;180m'  # Pink RGB color
+  NC='\033[0m'                   # No Color (reset)
+
+  # Modify echo to add color for part of the HOSTNAME text
+  echo -e "\n${PINK}$1${NC}"     # Print title with pink color
+  eval "$2"                      # Execute the command
 }
 
 # Enumeration tasks with titles

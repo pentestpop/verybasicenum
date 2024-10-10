@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define color codes ${PINK} for PINK and ${RESET} to reset
-PINK='\033[35m'
+PINK='\033[38;2;255;105;180m'  # Pink RGB color
 RESET='\033[0m'
 
 # Check if script is run with sudo privileges

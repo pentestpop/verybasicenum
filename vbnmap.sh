@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Define color codes ${PINK} for PINK and ${NC} to NC
-PINK='\033[38;2;255;105;180m'  # Pink RGB color
-NC='\033[0m'                   # No Color (NC)
-
 # Check if script is run with sudo privileges
 if [[ "$EUID" -ne 0 ]]; then
   echo "This script must be run with sudo privileges. Please run as root or use sudo."
@@ -33,7 +29,7 @@ echo "Running full TCP scan on all ports..." | tee -a $OUTPUT_FILE
 OPEN_PORTS=$(nmap -p- --open -T4 $IP -oG - | grep 'Ports:' | awk -F'Ports: ' '{print $2}' | grep -oE '[0-9]+/open' | cut -d'/' -f1 | tr '\n' ',' | sed 's/,$//')
 
 # Debugging: Display the content of OPEN_PORTS to check if it's correct
-echo "DEBUG: Extracted open TCP ports: ${PINK} $OPEN_PORTS ${NC}"
+echo "DEBUG: Extracted open TCP ports: $OPEN_PORTS "
 
 # 3. Check if there are any open TCP ports before proceeding
 if [ -z "$OPEN_PORTS" ]; then
@@ -49,7 +45,7 @@ else
 
     # Run the detailed scan on open TCP ports
     echo "Running detailed scan on open TCP ports..." | tee -a $OUTPUT_FILE
-    ${PINK} nmap -sC -A -p"$OPEN_PORTS" "$IP"${NC} >> $OUTPUT_FILE
+    nmap -sC -A -p"$OPEN_PORTS" "$IP" >> $OUTPUT_FILE
 fi
 
 # 4. Run a UDP scan
@@ -57,4 +53,4 @@ echo "Running UDP scan..." | tee -a $OUTPUT_FILE
 ${PINK} nmap -sU -T4 --top-ports 100 "$IP" ${NC} >> $OUTPUT_FILE
 
 # 5. Finish up
-echo "Scan complete. Results saved in ${PINK} $OUTPUT_FILE " ${NC}
+echo "Scan complete. Results saved in $OUTPUT_FILE "

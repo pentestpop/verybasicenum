@@ -20,7 +20,7 @@ Write-Host ""
 Write-Host "==========================" -ForegroundColor Yellow
 Write-Host "User Information:" -ForegroundColor Red
 Write-Host "==========================" -ForegroundColor Yellow
-net user | Write-Host -ForegroundColor White
+net user $env:USERNAME | Write-Host -ForegroundColor White
 Write-Host ""
 
 # Domain User Information

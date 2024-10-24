@@ -50,7 +50,7 @@ fi
 
 # 4. Run a UDP scan
 echo "Running UDP scan..." | tee -a $OUTPUT_FILE
-${PINK} nmap -sU -T4 --top-ports 100 "$IP" ${NC} >> $OUTPUT_FILE
+nmap -sU -T4 --top-ports 100 "$IP" >> $OUTPUT_FILE
 
 # 5. Finish up
 echo "Scan complete. Results saved in $OUTPUT_FILE "

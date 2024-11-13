@@ -16,6 +16,13 @@ Write-Host "==========================" -ForegroundColor Yellow
 whoami /priv | Write-Host -ForegroundColor White
 Write-Host ""
 
+# Groups (using Whoami /groups)
+Write-Host "==========================" -ForegroundColor Yellow
+Write-Host "Groups:" -ForegroundColor Red
+Write-Host "==========================" -ForegroundColor Yellow
+whoami /groups | Write-Host -ForegroundColor White
+Write-Host ""
+
 # User Information
 Write-Host "==========================" -ForegroundColor Yellow
 Write-Host "User Information:" -ForegroundColor Red

